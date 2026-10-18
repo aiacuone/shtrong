@@ -8,6 +8,10 @@ declare global {
 			user: { id: string; username: string; email: string } | null;
 		}
 	}
+
+	interface Window {
+		goatcounter?: { no_onload?: boolean; count?: (vars: { path: string }) => void };
+	}
 }
 
 export {};

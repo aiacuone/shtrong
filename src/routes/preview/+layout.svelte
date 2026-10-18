@@ -1,34 +1,29 @@
 <script lang="ts">
 	import { afterNavigate } from '$app/navigation';
-	import { env } from '$env/dynamic/public';
-	import { onMount } from 'svelte';
 
 	let { children } = $props();
-	const measurementId = env.PUBLIC_GA_MEASUREMENT_ID;
 
-	function gtag(...args: unknown[]) {
-		const w = window as typeof window & { dataLayer?: unknown[][] };
-		(w.dataLayer ??= []).push(args);
+	// Counts go to the portfolio's GoatCounter, prefixed with /strongr to keep them apart from its pages.
+	const STATS = 'https://stats.portfolio-aiacuone.duckdns.org';
+	let counter: Promise<void> | undefined;
+
+	function loadCounter() {
+		if (window.goatcounter?.count) return Promise.resolve();
+		return (counter ??= new Promise((resolve) => {
+			window.goatcounter = { no_onload: true };
+			const script = document.createElement('script');
+			script.async = true;
+			script.dataset.goatcounter = `${STATS}/count`;
+			script.src = `${STATS}/count.js`;
+			script.onload = () => resolve();
+			document.head.appendChild(script);
+		}));
 	}
 
-	onMount(() => {
-		if (!measurementId) return;
-		const script = document.createElement('script');
-		script.async = true;
-		script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(measurementId)}`;
-		document.head.appendChild(script);
-		gtag('js', new Date());
-		gtag('config', measurementId, { send_page_view: false });
-		return () => script.remove();
-	});
-
-	afterNavigate(() => {
-		if (!measurementId) return;
-		gtag('event', 'page_view', {
-			page_title: document.title,
-			page_location: window.location.href,
-			page_path: `${window.location.pathname}${window.location.search}`
-		});
+	afterNavigate(({ to }) => {
+		if (!to) return;
+		const path = `/strongr${to.url.pathname}`;
+		loadCounter().then(() => window.goatcounter?.count?.({ path }));
 	});
 </script>
 

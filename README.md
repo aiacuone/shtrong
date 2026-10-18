@@ -52,3 +52,7 @@ Once a day, a cron job on the VM should:
 Keep the last 7 to 14 daily files and delete the older ones. A daily copy of this database is only megabytes.
 
 A restore script downloads the latest tar from R2, unpacks it into `PGLITE_DIR`, and the app is started again. Workouts logged after that upload are the ones that are missing. On a new VM, run that script before the first start.
+
+## Analytics
+
+Visits to the public preview (`/preview/...`) are counted by the self-hosted GoatCounter on the portfolio VM, dashboard at https://stats.portfolio-aiacuone.duckdns.org. Paths are reported as `/strongr/preview/...` so they stay apart from the portfolio's own pages. `src/routes/preview/+layout.svelte` loads `count.js` on the first preview page and counts every preview navigation; the signed-in app is not tracked. GoatCounter sets no cookies and ignores `localhost`.
