@@ -25,7 +25,7 @@ jobs:
           install -m 700 -d ~/.ssh
           printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          printf '%s\n' 'strongr.duckdns.org ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEuGjnv8RR15sEMxm7/yjw6ydggXKu+qe+FIOJQNOm/j' > ~/.ssh/known_hosts
+          printf '%s\n' 'shtrong.duckdns.org ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEuGjnv8RR15sEMxm7/yjw6ydggXKu+qe+FIOJQNOm/j' > ~/.ssh/known_hosts
 
       - name: Sync source and publish
         run: |
@@ -37,6 +37,6 @@ jobs:
             --exclude '.svelte-kit/' \
             --exclude 'data/' \
             -e 'ssh -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes' \
-            ./ ubuntu@strongr.duckdns.org:strongr-src/
-          ssh -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes ubuntu@strongr.duckdns.org \
-            'bash ~/strongr-src/scripts/activate-release.sh'
+            ./ ubuntu@shtrong.duckdns.org:shtrong-src/
+          ssh -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes ubuntu@shtrong.duckdns.org \
+            'bash ~/shtrong-src/scripts/activate-release.sh'

@@ -4,19 +4,19 @@ Personal strength training log. SvelteKit app (`adapter-node`) with an embedded 
 
 ## Hosting
 
-The app was called Strongr. The hosting still uses that name: the `strongr.duckdns.org` domain, the `strongr` systemd service, `/opt/strongr`, `/var/lib/strongr`, the `strongr-backup`/`strongr-restore` scripts and the R2 bucket. The deploy files (`.github/workflows/deploy.yml`, `scripts/activate-release.sh`) match the VM, so rename them only together with the VM.
+The app was called Strongr until 2026-10-18. The Cloudflare R2 bucket keeps the name `strongr`, because R2 cannot rename buckets.
 
 Run it on an **Oracle Cloud Always Free** virtual machine, starting on the **free account** (not Pay As You Go). The home region is **Melbourne** (`ap-melbourne-1`). The home region cannot be changed later.
 
-Use the free **DuckDNS** name `strongr.duckdns.org`. One name is enough. The account allows up to five, for other projects. A small program on the VM updates DuckDNS whenever the public IP changes, including after Oracle stops and starts the machine.
+Use the free **DuckDNS** name `shtrong.duckdns.org`. One name is enough. The account allows up to five, for other projects. A small program on the VM updates DuckDNS whenever the public IP changes, including after Oracle stops and starts the machine.
 
-Caddy serves the app on that name and gets the lock from Let's Encrypt. Set `ORIGIN` to `https://strongr.duckdns.org`. Open ports 80 and 443. Sign-in is Google. Only addresses in `ALLOWED_EMAILS` can get in. The Google redirect URI is `https://strongr.duckdns.org/login/google/callback`.
+Caddy serves the app on that name and gets the lock from Let's Encrypt. Set `ORIGIN` to `https://shtrong.duckdns.org`. Open ports 80 and 443. Sign-in is Google. Only addresses in `ALLOWED_EMAILS` can get in. The Google redirect URI is `https://shtrong.duckdns.org/login/google/callback`.
 
 That name is a subdomain DuckDNS owns. It stays free while they run the service. A domain you own replaces it later if the app is sold. The free VM and the single database file on its disk get replaced at that point too.
 
 The app runs as `node build` under systemd. Leave `DATABASE_URL` unset so the database stays in `PGLITE_DIR` (default `./data/pglite`) on the VM's boot volume. Provision the VM with the `oci` CLI.
 
-A push to `master` deploys. GitHub Actions syncs the repo to the VM over SSH, builds there, and restarts the `strongr` service. The deploy key is the `DEPLOY_SSH_KEY` secret. Its public half is in the VM's `authorized_keys`. The private half is only in GitHub and in `~/.config/strongr/github-deploy` on the machine that created it.
+A push to `master` deploys. GitHub Actions syncs the repo to the VM over SSH, builds there, and restarts the `shtrong` service. The deploy key is the `DEPLOY_SSH_KEY` secret. Its public half is in the VM's `authorized_keys`. The private half is only in GitHub and in `~/.config/shtrong/github-deploy` on the machine that created it.
 
 A free-account Ampere shape is 2 OCPUs and 12 GB, with 200 GB of block storage. That is enough for this app.
 

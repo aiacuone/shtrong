@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Build a staged copy, then swap it into /opt/strongr and restart systemd.
+# Build a staged copy, then swap it into /opt/shtrong and restart systemd.
 # A failed health check restores the previous good tree.
 set -euo pipefail
 
-src="${HOME}/strongr-src"
-prev="${HOME}/strongr-prev"
-live=/opt/strongr
+src="${HOME}/shtrong-src"
+prev="${HOME}/shtrong-prev"
+live=/opt/shtrong
 
 cd "$src"
 npm ci
@@ -26,9 +26,9 @@ wait_healthy() {
   return 1
 }
 
-sudo systemctl stop strongr
+sudo systemctl stop shtrong
 rsync -a --delete --exclude data "$src"/ "$live"/
-sudo systemctl start strongr
+sudo systemctl start shtrong
 
 if wait_healthy; then
   rm -rf "$prev"
@@ -37,13 +37,13 @@ if wait_healthy; then
   exit 0
 fi
 
-echo "strongr did not answer on :3000 after restart" >&2
-sudo systemctl status strongr --no-pager || true
+echo "shtrong did not answer on :3000 after restart" >&2
+sudo systemctl status shtrong --no-pager || true
 
 if [ -d "$prev/build" ]; then
   echo "restoring previous release" >&2
   rsync -a --delete --exclude data "$prev"/ "$live"/
-  sudo systemctl start strongr || true
+  sudo systemctl start shtrong || true
 fi
 
 exit 1
