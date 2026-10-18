@@ -19,7 +19,7 @@ These three accounts cannot be created from the CLI.
 
 - [x] Install and configure the `oci` CLI on this machine. `oci` 3.94.1 is in `~/.local/bin`.
 - [x] Network reused: existing Melbourne VCN. Security list already allows SSH, port 80, and port 443.
-- [x] Ampere VM `strongr` (OCI display name; the app runs as `shtrong`) is RUNNING. Shape `VM.Standard.A1.Flex`, 1 OCPU, 6 GB, Ubuntu 24.04. Public IP `161.33.70.241`. SSH user `ubuntu`, key `~/.ssh/id_ed25519`.
+- [x] Ampere VM `shtrong` (OCI name and hostname) is RUNNING. Shape `VM.Standard.A1.Flex`, 1 OCPU, 6 GB, Ubuntu 24.04. Public IP `161.33.70.241`. SSH user `ubuntu`, key `~/.ssh/id_ed25519`.
 - [x] SSH in. Node 24, Caddy, and `rclone` are installed.
 - [x] App is built and running under systemd as `node build`. `DATABASE_URL` is unset. `ORIGIN` is `https://shtrong.duckdns.org`. Database is `/var/lib/shtrong/pglite`.
 - [x] Caddy has a Let's Encrypt certificate and proxies to the app.
@@ -27,4 +27,5 @@ These three accounts cannot be created from the CLI.
 - [x] Daily backup script and 3:00am timer are installed. The script stops the app, tars `PGLITE_DIR`, starts the app, and uploads with `rclone` only when the database changed. It keeps the last 14 copies.
 - [x] Restore script is installed: `shtrong-restore` replaces the live database and then starts the app. `shtrong-restore --to DIR` unpacks into a copy and leaves the app alone.
 - [x] New R2 key is on the VM. A backup uploaded, and restoring that file into a copy reproduced the database (1041 files, including `PG_VERSION`).
-- [ ] Open `https://shtrong.duckdns.org`, create the owner login, and confirm a workout survives a refresh. The login page already returns HTTPS 200.
+- [x] Google sign-in works on `https://shtrong.duckdns.org`. The client ID, secret and `ALLOWED_EMAILS` are in `/etc/shtrong/app.env` (root only), loaded by `shtrong.service`.
+- [ ] Confirm a logged workout survives a refresh.

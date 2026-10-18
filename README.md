@@ -10,7 +10,7 @@ Run it on an **Oracle Cloud Always Free** virtual machine, starting on the **fre
 
 Use the free **DuckDNS** name `shtrong.duckdns.org`. One name is enough. The account allows up to five, for other projects. A small program on the VM updates DuckDNS whenever the public IP changes, including after Oracle stops and starts the machine.
 
-Caddy serves the app on that name and gets the lock from Let's Encrypt. Set `ORIGIN` to `https://shtrong.duckdns.org`. Open ports 80 and 443. Sign-in is Google. Only addresses in `ALLOWED_EMAILS` can get in. The Google redirect URI is `https://shtrong.duckdns.org/login/google/callback`.
+Caddy serves the app on that name and gets the lock from Let's Encrypt. Set `ORIGIN` to `https://shtrong.duckdns.org`. Open ports 80 and 443. Sign-in is Google. Only addresses in `ALLOWED_EMAILS` can get in. On the VM the Google settings are in `/etc/shtrong/app.env`, which `shtrong.service` loads. The Google redirect URI is `https://shtrong.duckdns.org/login/google/callback`.
 
 That name is a subdomain DuckDNS owns. It stays free while they run the service. A domain you own replaces it later if the app is sold. The free VM and the single database file on its disk get replaced at that point too.
 
