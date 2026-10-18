@@ -163,7 +163,7 @@
 	}
 </script>
 
-<svelte:head><title>{data.routine.name} · Strongr</title></svelte:head>
+<svelte:head><title>{data.routine.name} · Shtrong</title></svelte:head>
 
 <div class="page">
 	<a class="back" href="/routines"><Icon name="back" size={18} />Routines</a>

@@ -3,7 +3,7 @@
 
 	let { children } = $props();
 
-	// Counts go to the portfolio's GoatCounter, prefixed with /strongr to keep them apart from its pages.
+	// Counts go to the portfolio's GoatCounter, prefixed with /shtrong to keep them apart from its pages.
 	const STATS = 'https://stats.portfolio-aiacuone.duckdns.org';
 	let counter: Promise<void> | undefined;
 
@@ -22,7 +22,7 @@
 
 	afterNavigate(({ to }) => {
 		if (!to) return;
-		const path = `/strongr${to.url.pathname}`;
+		const path = `/shtrong${to.url.pathname}`;
 		loadCounter().then(() => window.goatcounter?.count?.({ path }));
 	});
 </script>

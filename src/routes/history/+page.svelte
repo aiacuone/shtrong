@@ -41,7 +41,7 @@
 	});
 </script>
 
-<svelte:head><title>History · Strongr</title></svelte:head>
+<svelte:head><title>History · Shtrong</title></svelte:head>
 
 <div class="page">
 	<div class="page-head">

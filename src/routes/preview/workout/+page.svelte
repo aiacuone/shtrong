@@ -15,7 +15,7 @@
 	}
 </script>
 
-<svelte:head><title>Workout preview · Strongr</title></svelte:head>
+<svelte:head><title>Workout preview · Shtrong</title></svelte:head>
 
 <div class="page">
 	{#if previewSession.active}

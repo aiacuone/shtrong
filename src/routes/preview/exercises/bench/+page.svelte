@@ -11,7 +11,7 @@
 		.filter((item) => item.sets.length);
 </script>
 
-<svelte:head><title>Bench Press preview · Strongr</title></svelte:head>
+<svelte:head><title>Bench Press preview · Shtrong</title></svelte:head>
 
 <div class="page">
 	<a class="back" href="/preview/exercises">← Exercises</a>

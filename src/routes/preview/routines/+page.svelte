@@ -10,7 +10,7 @@
 	}
 </script>
 
-<svelte:head><title>Routines preview · Strongr</title></svelte:head>
+<svelte:head><title>Routines preview · Shtrong</title></svelte:head>
 
 <div class="page">
 	<div class="page-head">

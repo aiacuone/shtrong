@@ -12,7 +12,7 @@
 	}
 </script>
 
-<svelte:head><title>Push Strength routine · Strongr</title></svelte:head>
+<svelte:head><title>Push Strength routine · Shtrong</title></svelte:head>
 
 <div class="page">
 	<a class="back" href="/preview/routines">← Routines</a>

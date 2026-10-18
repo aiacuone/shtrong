@@ -21,7 +21,7 @@
 	const groups = $derived([...new Set(data.exercises.map((e) => e.muscleGroup))].sort());
 </script>
 
-<svelte:head><title>Exercises · Strongr</title></svelte:head>
+<svelte:head><title>Exercises · Shtrong</title></svelte:head>
 
 <div class="page">
 	<div class="page-head">

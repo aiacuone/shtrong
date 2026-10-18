@@ -36,7 +36,7 @@
 	}
 </script>
 
-<svelte:head><title>Measurements preview · Strongr</title></svelte:head>
+<svelte:head><title>Measurements preview · Shtrong</title></svelte:head>
 
 <div class="page">
 	<div class="page-head">

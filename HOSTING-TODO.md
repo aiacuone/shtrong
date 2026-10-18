@@ -12,8 +12,8 @@ These three accounts cannot be created from the CLI.
 
 - [x] **Oracle Cloud.** Home region **Australia Southeast (Melbourne)**, `ap-melbourne-1`. Upgraded to Pay As You Go. The 1 OCPU / 6 GB machine stays inside the free allowance.
 - [x] **OCI API access.** Config is in `~/.oci/config`. Private key is `~/.oci/oci_api_key.pem`. The SSH key `~/.ssh/id_ed25519.pub` is for logging into the VM later.
-- [x] **DuckDNS.** Name is `strongr.duckdns.org`. Token is in `~/.config/strongr/duckdns.env`, not in git.
-- [x] **Cloudflare R2.** Bucket `strongr`. Credentials are in `~/.config/strongr/r2.env`, not in git.
+- [x] **DuckDNS.** Name is `strongr.duckdns.org`. Token is in `~/.config/shtrong/duckdns.env`, not in git.
+- [x] **Cloudflare R2.** Bucket `strongr`. Credentials are in `~/.config/shtrong/r2.env`, not in git.
 
 ## CLI, after those exist
 

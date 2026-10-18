@@ -1,8 +1,10 @@
-# Strongr
+# Shtrong
 
 Personal strength training log. SvelteKit app (`adapter-node`) with an embedded Postgres database (PGlite) on disk.
 
 ## Hosting
+
+The app was called Strongr. The hosting still uses that name: the `strongr.duckdns.org` domain, the `strongr` systemd service, `/opt/strongr`, `/var/lib/strongr`, the `strongr-backup`/`strongr-restore` scripts and the R2 bucket. The deploy files (`.github/workflows/deploy.yml`, `scripts/activate-release.sh`) match the VM, so rename them only together with the VM.
 
 Run it on an **Oracle Cloud Always Free** virtual machine, starting on the **free account** (not Pay As You Go). The home region is **Melbourne** (`ap-melbourne-1`). The home region cannot be changed later.
 
@@ -55,4 +57,4 @@ A restore script downloads the latest tar from R2, unpacks it into `PGLITE_DIR`,
 
 ## Analytics
 
-Visits to the public preview (`/preview/...`) are counted by the self-hosted GoatCounter on the portfolio VM, dashboard at https://stats.portfolio-aiacuone.duckdns.org. Paths are reported as `/strongr/preview/...` so they stay apart from the portfolio's own pages. `src/routes/preview/+layout.svelte` loads `count.js` on the first preview page and counts every preview navigation; the signed-in app is not tracked. GoatCounter sets no cookies and ignores `localhost`.
+Visits to the public preview (`/preview/...`) are counted by the self-hosted GoatCounter on the portfolio VM, dashboard at https://stats.portfolio-aiacuone.duckdns.org. Paths are reported as `/shtrong/preview/...` so they stay apart from the portfolio's own pages. `src/routes/preview/+layout.svelte` loads `count.js` on the first preview page and counts every preview navigation; the signed-in app is not tracked. GoatCounter sets no cookies and ignores `localhost`.

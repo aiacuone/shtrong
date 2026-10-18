@@ -175,7 +175,7 @@
 	}
 </script>
 
-<svelte:head><title>{w.name} · Strongr</title></svelte:head>
+<svelte:head><title>{w.name} · Shtrong</title></svelte:head>
 
 <!-- svelte-ignore a11y_no_static_element_interactions (delegates caret placement for the fields inside) -->
 <div class="page" onfocusin={caretAtEnd} onpointerup={caretAtEnd}>

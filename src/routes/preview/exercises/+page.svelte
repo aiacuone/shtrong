@@ -14,7 +14,7 @@
 	);
 </script>
 
-<svelte:head><title>Exercises preview · Strongr</title></svelte:head>
+<svelte:head><title>Exercises preview · Shtrong</title></svelte:head>
 
 <div class="page">
 	<div class="page-head">

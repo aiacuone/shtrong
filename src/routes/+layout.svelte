@@ -65,7 +65,7 @@
 
 {#if chrome}
 	<header class="topbar">
-		<a class="brand" href={preview ? '/preview' : '/'}>STRONGR</a>
+		<a class="brand" href={preview ? '/preview' : '/'}>SHTRONG</a>
 		<div class="top-actions">
 			<nav class="desk-nav" aria-label="Primary">
 				{#each tabs as t (t.href)}

@@ -407,7 +407,7 @@
 	}
 </script>
 
-<svelte:head><title>Measurements · Strongr</title></svelte:head>
+<svelte:head><title>Measurements · Shtrong</title></svelte:head>
 
 <div class="page">
 	<div class="page-head">

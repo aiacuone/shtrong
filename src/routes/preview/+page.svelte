@@ -13,13 +13,13 @@
 	}
 </script>
 
-<svelte:head><title>Preview · Strongr</title></svelte:head>
+<svelte:head><title>Preview · Shtrong</title></svelte:head>
 
 <div class="page">
 	<section class="hero">
 		<p class="eyebrow">Welcome to the sample account</p>
 		<h1>Train with a clear record.</h1>
-		<p class="muted">Strongr keeps routines, working sets, progress and body measurements together.</p>
+		<p class="muted">Shtrong keeps routines, working sets, progress and body measurements together.</p>
 	</section>
 
 	<PreviewNote>Start with the week chart and body-fat snapshot, then launch a sample routine below.</PreviewNote>

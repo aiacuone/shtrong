@@ -2,12 +2,12 @@
 	let { data } = $props();
 </script>
 
-<svelte:head><title>Sign in · Strongr</title></svelte:head>
+<svelte:head><title>Sign in · Shtrong</title></svelte:head>
 
 <div class="screen">
 	<div class="plate" aria-hidden="true"></div>
 	<section class="panel">
-		<h1 class="wordmark">STRONGR</h1>
+		<h1 class="wordmark">SHTRONG</h1>
 		<p class="lede">Every set, drop and hold — logged.</p>
 
 		{#if data.error}

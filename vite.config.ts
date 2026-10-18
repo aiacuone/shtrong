@@ -9,8 +9,8 @@ export default defineConfig({
 			registerType: 'autoUpdate',
 			injectRegister: false,
 			manifest: {
-				name: 'Strongr',
-				short_name: 'Strongr',
+				name: 'Shtrong',
+				short_name: 'Shtrong',
 				description: 'Personal strength training log with HIT methods and body measurements.',
 				start_url: '/',
 				scope: '/',

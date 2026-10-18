@@ -4,7 +4,7 @@
 	import { previewSession } from '$lib/preview/session.svelte';
 </script>
 
-<svelte:head><title>History preview · Strongr</title></svelte:head>
+<svelte:head><title>History preview · Shtrong</title></svelte:head>
 
 <div class="page">
 	<div class="page-head">

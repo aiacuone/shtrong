@@ -7,7 +7,7 @@
 	const workout = workoutHistory[0];
 </script>
 
-<svelte:head><title>Push Strength preview · Strongr</title></svelte:head>
+<svelte:head><title>Push Strength preview · Shtrong</title></svelte:head>
 
 <div class="page">
 	<a class="back" href="/preview/history">← History</a>

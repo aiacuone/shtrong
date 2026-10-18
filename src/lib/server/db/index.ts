@@ -46,7 +46,7 @@ async function connect(): Promise<Db> {
 }
 
 // Survive dev-server HMR: PGlite must only ever open its data dir once per process.
-const g = globalThis as unknown as { __strongrDb?: Promise<Db> };
+const g = globalThis as unknown as { __shtrongDb?: Promise<Db> };
 
-export const db: Db = building ? (null as unknown as Db) : await (g.__strongrDb ??= connect());
+export const db: Db = building ? (null as unknown as Db) : await (g.__shtrongDb ??= connect());
 export { schema };
