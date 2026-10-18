@@ -13,9 +13,9 @@
 	import { hitMethod } from '$lib/hit';
 	import TrendMarks from '$lib/components/Trend.svelte';
 	import { RECORD_LABEL, recordDetail, type Trend } from '$lib/records';
-	import type { HitLogView, Session, SetView } from '$lib/types';
+	import type { ExerciseSetupFields, HitLogView, Session, SetView } from '$lib/types';
 	import { selectAll } from '$lib/select-all';
-	import { displayToKg, formatDate, formatDuration, kgToDisplay } from '$lib/units';
+	import { displayToKg, formatDate, formatDuration, kgToDisplay, parseCount } from '$lib/units';
 
 	let { data } = $props();
 
@@ -126,15 +126,9 @@
 		permanentForm?.requestSubmit();
 	}
 
-	function repsOrNull(v: string) {
-		if (v.trim() === '') return null;
-		const n = Math.round(Number(v));
-		return Number.isFinite(n) && n >= 0 ? n : null;
-	}
-
 	async function saveSet(set: SetView, weight: string, reps: string) {
 		set.weightKg = displayToKg(weight, unit);
-		set.reps = repsOrNull(reps);
+		set.reps = parseCount(reps);
 		setId = set.id;
 		setWeight = kgToDisplay(set.weightKg, unit);
 		setReps = set.reps == null ? '' : String(set.reps);
@@ -167,7 +161,7 @@
 
 	async function saveSetup(
 		weId: string,
-		patch: { cableHeight?: string | null; seatHeight?: string | null; support?: string | null }
+		patch: Partial<ExerciseSetupFields>
 	) {
 		const ex = w.exercises.find((e) => e.id === weId);
 		if (ex) Object.assign(ex, patch);
@@ -183,6 +177,7 @@
 
 <svelte:head><title>{w.name} · Strongr</title></svelte:head>
 
+<!-- svelte-ignore a11y_no_static_element_interactions (delegates caret placement for the fields inside) -->
 <div class="page" onfocusin={caretAtEnd} onpointerup={caretAtEnd}>
 	<a class="back" href="/history"><Icon name="back" size={18} />History</a>
 
@@ -585,12 +580,6 @@
 		width: 1.2rem;
 		font-weight: 800;
 		color: var(--steel);
-	}
-	.note {
-		margin-top: 0.4rem;
-		font-size: 0.88rem;
-		font-style: italic;
-		color: var(--ink-2);
 	}
 	.actions {
 		display: grid;

@@ -2,7 +2,7 @@ import { error } from '@sveltejs/kit';
 import { and, asc, desc, eq, inArray, ne, sql } from 'drizzle-orm';
 import { RATING_MAX } from '$lib/format';
 import { HIT_BY_KEY } from '$lib/hit';
-import type { WorkoutExerciseState, WorkoutState } from '$lib/types';
+import type { HitLogData, SetType, WorkoutExerciseState, WorkoutState } from '$lib/types';
 import { db, schema } from './db';
 import { exerciseHistory, loadSetsAndHits } from './history';
 import { routineItems } from './routines';
@@ -108,7 +108,7 @@ async function lastSetup(tx: Tx, userId: string, exerciseId: string) {
 				eq(schema.workout.status, 'completed')
 			)
 		)
-		.orderBy(sql`${schema.workout.startedAt} desc`)
+		.orderBy(desc(schema.workout.startedAt))
 		.limit(1);
 	return row ?? { cableHeight: null, seatHeight: null, support: null, repRange: null };
 }
@@ -248,7 +248,7 @@ type SetPatch = Partial<{
 	weightKg: number | null;
 	reps: number | null;
 	completed: boolean;
-	type: 'normal' | 'warmup' | 'failure';
+	type: SetType;
 }>;
 type ExercisePatch = Partial<{
 	cableHeight: string | null;
@@ -265,7 +265,7 @@ type HitLogPatch = Partial<{
 	durationSec: number | null;
 	restSec: number | null;
 	completed: boolean;
-	data: { exerciseId?: string; exerciseName?: string };
+	data: HitLogData;
 }>;
 
 export type Op =
@@ -662,7 +662,7 @@ function defaultLog(methodKey: string, hitId: string, position: number, weightKg
 		position,
 		weightKg: def?.fields.includes('weight') ? weightKg : null,
 		restSec: def?.fields.includes('rest') ? (def.defaultRest ?? null) : null,
-		data: {} as { exerciseId?: string; exerciseName?: string }
+		data: {} as HitLogData
 	};
 }
 

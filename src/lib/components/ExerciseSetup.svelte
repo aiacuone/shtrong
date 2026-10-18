@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { tick } from 'svelte';
+	import { onDismiss } from '$lib/dismiss';
+	import type { ExerciseSetupFields } from '$lib/types';
 	import { selectAll } from '$lib/select-all';
 	import Icon from './Icon.svelte';
 
@@ -18,7 +20,7 @@
 		cableHeight: string | null;
 		seatHeight: string | null;
 		support: string | null;
-		onchange: (patch: { cableHeight?: string | null; seatHeight?: string | null; support?: string | null }) => void;
+		onchange: (patch: Partial<ExerciseSetupFields>) => void;
 		onhit?: () => void;
 		onnote?: () => void;
 		hideMenu?: boolean;
@@ -62,18 +64,10 @@
 
 	$effect(() => {
 		if (!addOpen) return;
-		const close = (e: PointerEvent) => {
-			if (!addMenu?.contains(e.target as Node)) addOpen = false;
-		};
-		const onKey = (e: KeyboardEvent) => {
-			if (e.key === 'Escape') addOpen = false;
-		};
-		document.addEventListener('pointerdown', close);
-		document.addEventListener('keydown', onKey);
-		return () => {
-			document.removeEventListener('pointerdown', close);
-			document.removeEventListener('keydown', onKey);
-		};
+		return onDismiss(
+			(target) => !!addMenu?.contains(target as Node),
+			() => (addOpen = false)
+		);
 	});
 
 	async function addDetail(kind: 'height' | 'seat' | 'support') {

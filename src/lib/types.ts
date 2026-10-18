@@ -2,6 +2,13 @@ export type HitLogData = { exerciseId?: string; exerciseName?: string };
 
 export type SetType = 'normal' | 'warmup' | 'failure';
 
+/** Machine setup carried between sessions of an exercise. */
+export type ExerciseSetupFields = {
+	cableHeight: string | null;
+	seatHeight: string | null;
+	support: string | null;
+};
+
 export type SetView = {
 	id: string;
 	position: number;

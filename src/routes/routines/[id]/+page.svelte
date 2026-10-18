@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { tick } from 'svelte';
+	import { onDismiss } from '$lib/dismiss';
 	import ExercisePicker from '$lib/components/ExercisePicker.svelte';
 	import ExerciseSetup from '$lib/components/ExerciseSetup.svelte';
 	import HistorySessionNote from '$lib/components/HistorySessionNote.svelte';
@@ -10,6 +11,7 @@
 	import { HIT_METHODS, hitMethod } from '$lib/hit';
 	import { parseRepRange } from '$lib/rep-range';
 	import { selectAll } from '$lib/select-all';
+	import type { ExerciseSetupFields } from '$lib/types';
 	import { kgToDisplay } from '$lib/units';
 
 	let { data } = $props();
@@ -60,20 +62,10 @@
 
 	$effect(() => {
 		if (!openHit) return;
-		const close = (e: PointerEvent) => {
-			const target = e.target;
-			if (target instanceof Element && target.closest('[data-hit-menu]')) return;
-			openHit = null;
-		};
-		const onKey = (e: KeyboardEvent) => {
-			if (e.key === 'Escape') openHit = null;
-		};
-		document.addEventListener('pointerdown', close);
-		document.addEventListener('keydown', onKey);
-		return () => {
-			document.removeEventListener('pointerdown', close);
-			document.removeEventListener('keydown', onKey);
-		};
+		return onDismiss(
+			(target) => target instanceof Element && !!target.closest('[data-hit-menu]'),
+			() => (openHit = null)
+		);
 	});
 
 	function closeHitSheet() {
@@ -133,7 +125,7 @@
 
 	async function saveSetup(
 		itemId: string,
-		patch: { cableHeight?: string | null; seatHeight?: string | null; support?: string | null }
+		patch: Partial<ExerciseSetupFields>
 	) {
 		const item = data.items.find((it) => it.id === itemId);
 		if (!item) return;

@@ -9,6 +9,7 @@ import { previousSessionStats, previousWorkoutVolume, trendsForExercises, workou
 import { getPrefs, optNum, optStr, requireUser, str } from '$lib/server/util';
 import { getOwnedWorkout, getWorkoutState } from '$lib/server/workouts';
 import { RATING_MAX } from '$lib/format';
+import type { ExerciseSetupFields } from '$lib/types';
 import { displayToKg } from '$lib/units';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -174,7 +175,7 @@ export const actions: Actions = {
 	setup: async ({ locals, params, request }) => {
 		const { w } = await owned(locals, params.id);
 		const form = await request.formData();
-		const set: { cableHeight?: string | null; seatHeight?: string | null; support?: string | null } = {};
+		const set: Partial<ExerciseSetupFields> = {};
 		if (form.has('cableHeight')) set.cableHeight = optStr(form, 'cableHeight')?.slice(0, 20) ?? null;
 		if (form.has('seatHeight')) set.seatHeight = optStr(form, 'seatHeight')?.slice(0, 20) ?? null;
 		if (form.has('support')) set.support = optStr(form, 'support')?.slice(0, 20) ?? null;

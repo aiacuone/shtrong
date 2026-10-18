@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Build a staged copy, then swap it into /opt/workout and restart systemd.
+# Build a staged copy, then swap it into /opt/strongr and restart systemd.
 # A failed health check restores the previous good tree.
 set -euo pipefail
 
-src="${HOME}/workout-src"
-prev="${HOME}/workout-prev"
-live=/opt/workout
+src="${HOME}/strongr-src"
+prev="${HOME}/strongr-prev"
+live=/opt/strongr
 
 cd "$src"
 npm ci
@@ -26,9 +26,9 @@ wait_healthy() {
   return 1
 }
 
-sudo systemctl stop workout
+sudo systemctl stop strongr
 rsync -a --delete --exclude data "$src"/ "$live"/
-sudo systemctl start workout
+sudo systemctl start strongr
 
 if wait_healthy; then
   rm -rf "$prev"
@@ -37,13 +37,13 @@ if wait_healthy; then
   exit 0
 fi
 
-echo "workout did not answer on :3000 after restart" >&2
-sudo systemctl status workout --no-pager || true
+echo "strongr did not answer on :3000 after restart" >&2
+sudo systemctl status strongr --no-pager || true
 
 if [ -d "$prev/build" ]; then
   echo "restoring previous release" >&2
   rsync -a --delete --exclude data "$prev"/ "$live"/
-  sudo systemctl start workout || true
+  sudo systemctl start strongr || true
 fi
 
 exit 1

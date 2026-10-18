@@ -9,6 +9,7 @@ import {
 	text,
 	timestamp
 } from 'drizzle-orm/pg-core';
+import type { HitLogData } from '../../types';
 
 const id = () =>
 	text('id')
@@ -197,7 +198,6 @@ export const hitApplication = pgTable(
 	(t) => [index('hit_application_we_idx').on(t.workoutExerciseId)]
 );
 
-export type HitLogData = { exerciseId?: string; exerciseName?: string };
 
 export const hitLog = pgTable(
 	'hit_log',

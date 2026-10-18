@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import { onDismiss } from '$lib/dismiss';
 	import Icon from '$lib/components/Icon.svelte';
 	import HistorySessionNote from '$lib/components/HistorySessionNote.svelte';
 
@@ -40,18 +41,10 @@
 
 	$effect(() => {
 		if (!addOpen) return;
-		const close = (e: PointerEvent) => {
-			if (!addMenu?.contains(e.target as Node)) addOpen = false;
-		};
-		const onKey = (e: KeyboardEvent) => {
-			if (e.key === 'Escape') addOpen = false;
-		};
-		document.addEventListener('pointerdown', close);
-		document.addEventListener('keydown', onKey);
-		return () => {
-			document.removeEventListener('pointerdown', close);
-			document.removeEventListener('keydown', onKey);
-		};
+		return onDismiss(
+			(target) => !!addMenu?.contains(target as Node),
+			() => (addOpen = false)
+		);
 	});
 </script>
 

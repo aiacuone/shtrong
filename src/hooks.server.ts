@@ -1,5 +1,5 @@
 import { error, redirect, type Handle } from '@sveltejs/kit';
-import { SESSION_COOKIE, setSessionCookie, validateSession } from '$lib/server/auth';
+import { SESSION_COOKIE, clearSessionCookie, setSessionCookie, validateSession } from '$lib/server/auth';
 
 const PUBLIC_PATHS = ['/login', '/login/google', '/login/google/callback'];
 
@@ -13,7 +13,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 			event.locals.user = result.user;
 			setSessionCookie(event.cookies, token, result.expiresAt, event.url.protocol === 'https:');
 		} else {
-			event.cookies.delete(SESSION_COOKIE, { path: '/' });
+			clearSessionCookie(event.cookies);
 		}
 	}
 

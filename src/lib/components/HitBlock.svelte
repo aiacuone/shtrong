@@ -2,7 +2,7 @@
 	import { hitMethod, type HitField } from '$lib/hit';
 	import type { HitLogView, HitView } from '$lib/types';
 	import { selectAll } from '$lib/select-all';
-	import { displayToKg, kgToDisplay, type WeightUnit } from '$lib/units';
+	import { displayToKg, kgToDisplay, parseCount, type WeightUnit } from '$lib/units';
 	import type { WorkoutSession } from '$lib/workout/session.svelte';
 	import HitBadge from './HitBadge.svelte';
 	import HoldTimer from './HoldTimer.svelte';
@@ -36,12 +36,6 @@
 	function update(log: HitLogView, patch: Partial<HitLogView>) {
 		Object.assign(log, patch);
 		session.send({ op: 'updateHitLog', logId: log.id, patch });
-	}
-
-	function intOrNull(v: string) {
-		if (v.trim() === '') return null;
-		const n = Math.round(Number(v));
-		return Number.isFinite(n) && n >= 0 ? n : null;
 	}
 
 	function toggle(log: HitLogView, i: number) {
@@ -101,7 +95,7 @@
 									value={log.reps ?? ''}
 									onfocus={selectAll}
 									onpointerup={selectAll}
-									onchange={(e) => update(log, { reps: intOrNull(e.currentTarget.value) })}
+									onchange={(e) => update(log, { reps: parseCount(e.currentTarget.value) })}
 								/>
 							{:else if f === 'duration'}
 								<input
@@ -109,7 +103,7 @@
 									inputmode="numeric"
 									placeholder={p?.durationSec?.toString() ?? '–'}
 									value={log.durationSec ?? ''}
-									onchange={(e) => update(log, { durationSec: intOrNull(e.currentTarget.value) })}
+									onchange={(e) => update(log, { durationSec: parseCount(e.currentTarget.value) })}
 								/>
 							{:else if f === 'rest'}
 								<input
@@ -117,7 +111,7 @@
 									inputmode="numeric"
 									placeholder={p?.restSec?.toString() ?? '–'}
 									value={log.restSec ?? ''}
-									onchange={(e) => update(log, { restSec: intOrNull(e.currentTarget.value) })}
+									onchange={(e) => update(log, { restSec: parseCount(e.currentTarget.value) })}
 								/>
 							{:else if f === 'exercise'}
 								<select

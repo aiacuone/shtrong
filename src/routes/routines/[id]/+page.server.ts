@@ -6,6 +6,7 @@ import { getOwnedExercise, listExercises } from '$lib/server/exercises';
 import { getOwnedRoutine, latestExerciseSetup, routineItems, withKnownSetup } from '$lib/server/routines';
 import { getPrefs, optNum, optStr, requireUser, str } from '$lib/server/util';
 import { composeRepRange } from '$lib/rep-range';
+import type { ExerciseSetupFields } from '$lib/types';
 import { displayToKg } from '$lib/units';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -177,7 +178,7 @@ export const actions: Actions = {
 	setup: async ({ locals, params, request }) => {
 		const { routine } = await owned(locals, params.id);
 		const form = await request.formData();
-		const set: { cableHeight?: string | null; seatHeight?: string | null; support?: string | null } = {};
+		const set: Partial<ExerciseSetupFields> = {};
 		if (form.has('cableHeight')) set.cableHeight = optStr(form, 'cableHeight')?.slice(0, 20) ?? null;
 		if (form.has('seatHeight')) set.seatHeight = optStr(form, 'seatHeight')?.slice(0, 20) ?? null;
 		if (form.has('support')) set.support = optStr(form, 'support')?.slice(0, 20) ?? null;

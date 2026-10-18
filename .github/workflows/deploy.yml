@@ -37,6 +37,6 @@ jobs:
             --exclude '.svelte-kit/' \
             --exclude 'data/' \
             -e 'ssh -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes' \
-            ./ ubuntu@strongr.duckdns.org:workout-src/
+            ./ ubuntu@strongr.duckdns.org:strongr-src/
           ssh -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes ubuntu@strongr.duckdns.org \
-            'bash ~/workout-src/scripts/activate-release.sh'
+            'bash ~/strongr-src/scripts/activate-release.sh'

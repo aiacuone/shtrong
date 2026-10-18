@@ -20,6 +20,13 @@ export function displayToKg(value: string | number | null | undefined, unit: Wei
 	return unit === 'lb' ? n / LB_PER_KG : n;
 }
 
+/** A whole, non-negative count (reps, seconds) from a text field; blank or invalid is null. */
+export function parseCount(value: string) {
+	if (value.trim() === '') return null;
+	const n = Math.round(Number(value));
+	return Number.isFinite(n) && n >= 0 ? n : null;
+}
+
 export function cmToDisplay(cm: number | null | undefined, unit: LengthUnit): string {
 	if (cm == null) return '';
 	return trim(unit === 'in' ? cm / CM_PER_IN : cm, 1);

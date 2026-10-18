@@ -1,4 +1,5 @@
 import { and, asc, desc, eq, inArray } from 'drizzle-orm';
+import type { ExerciseSetupFields } from '$lib/types';
 import { db, schema } from './db';
 import { loadSetsAndHits } from './history';
 
@@ -43,7 +44,7 @@ export async function routineItems(routineIds: string[], exec: Executor = db) {
 export async function latestExerciseSetup(userId: string, exerciseIds: string[]) {
 	const ids = [...new Set(exerciseIds)];
 	if (!ids.length)
-		return new Map<string, { cableHeight: string | null; seatHeight: string | null; support: string | null }>();
+		return new Map<string, ExerciseSetupFields>();
 	const rows = await db
 		.selectDistinctOn([schema.workoutExercise.exerciseId], {
 			exerciseId: schema.workoutExercise.exerciseId,
@@ -65,10 +66,10 @@ export async function latestExerciseSetup(userId: string, exerciseIds: string[])
 }
 
 export function withKnownSetup<
-	T extends { exerciseId: string; cableHeight: string | null; seatHeight: string | null; support: string | null }
+	T extends ExerciseSetupFields & { exerciseId: string }
 >(
 	items: T[],
-	setups: Map<string, { cableHeight: string | null; seatHeight: string | null; support: string | null }>
+	setups: Map<string, ExerciseSetupFields>
 ) {
 	return items.map((it) => {
 		const last = setups.get(it.exerciseId);

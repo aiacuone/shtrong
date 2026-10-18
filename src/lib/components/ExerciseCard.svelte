@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { tick } from 'svelte';
+	import { onDismiss } from '$lib/dismiss';
 	import { setSummary } from '$lib/format';
 	import { HIT_METHODS, hitMethod } from '$lib/hit';
 	import { composeRepRange, parseRepRange } from '$lib/rep-range';
 	import type { SetType, SetView, WorkoutExerciseState } from '$lib/types';
 	import { selectAll } from '$lib/select-all';
-	import { displayToKg, kgToDisplay, type WeightUnit } from '$lib/units';
+	import { displayToKg, kgToDisplay, parseCount, type WeightUnit } from '$lib/units';
 	import type { WorkoutSession } from '$lib/workout/session.svelte';
 	import HitBlock from './HitBlock.svelte';
 	import Icon from './Icon.svelte';
@@ -84,18 +85,10 @@
 
 	$effect(() => {
 		if (!addOpen) return;
-		const close = (e: PointerEvent) => {
-			if (!addMenu?.contains(e.target as Node)) addOpen = false;
-		};
-		const onKey = (e: KeyboardEvent) => {
-			if (e.key === 'Escape') addOpen = false;
-		};
-		document.addEventListener('pointerdown', close);
-		document.addEventListener('keydown', onKey);
-		return () => {
-			document.removeEventListener('pointerdown', close);
-			document.removeEventListener('keydown', onKey);
-		};
+		return onDismiss(
+			(target) => !!addMenu?.contains(target as Node),
+			() => (addOpen = false)
+		);
 	});
 
 	function updateSet(set: SetView, patch: Partial<SetView>) {
@@ -117,12 +110,6 @@
 			}
 		}
 		session.send({ op: 'updateExercise', weId: we.id, patch });
-	}
-
-	function repsOrNull(v: string) {
-		if (v.trim() === '') return null;
-		const n = Math.round(Number(v));
-		return Number.isFinite(n) && n >= 0 ? n : null;
 	}
 
 	function toggle(set: SetView, i: number) {
@@ -232,7 +219,7 @@
 					value={set.reps ?? ''}
 					onfocus={selectAll}
 					onpointerup={selectAll}
-					onchange={(e) => updateSet(set, { reps: repsOrNull(e.currentTarget.value) })}
+					onchange={(e) => updateSet(set, { reps: parseCount(e.currentTarget.value) })}
 				/>
 				<button
 					type="button"

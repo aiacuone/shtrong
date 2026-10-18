@@ -2,7 +2,7 @@
 	import { hitMethod, type HitField } from '$lib/hit';
 	import { selectAll } from '$lib/select-all';
 	import type { HitLogView, HitView } from '$lib/types';
-	import { displayToKg, kgToDisplay, type WeightUnit } from '$lib/units';
+	import { displayToKg, kgToDisplay, parseCount, type WeightUnit } from '$lib/units';
 	import HitBadge from './HitBadge.svelte';
 
 	let {
@@ -25,12 +25,6 @@
 		rest: 'rest s',
 		exercise: 'exercise'
 	});
-
-	function intOrNull(value: string) {
-		if (!value.trim()) return null;
-		const number = Math.round(Number(value));
-		return Number.isFinite(number) && number >= 0 ? number : null;
-	}
 
 	function update(log: HitLogView, field: HitField, value: number | string | null) {
 		if (field === 'weight') log.weightKg = value as number | null;
@@ -71,7 +65,7 @@
 									value={log.reps ?? ''}
 									onfocus={selectAll}
 									onpointerup={selectAll}
-									onchange={(event) => update(log, field, intOrNull(event.currentTarget.value))}
+									onchange={(event) => update(log, field, parseCount(event.currentTarget.value))}
 								/>
 							{:else if field === 'duration'}
 								<input
@@ -80,7 +74,7 @@
 									value={log.durationSec ?? ''}
 									onfocus={selectAll}
 									onpointerup={selectAll}
-									onchange={(event) => update(log, field, intOrNull(event.currentTarget.value))}
+									onchange={(event) => update(log, field, parseCount(event.currentTarget.value))}
 								/>
 							{:else if field === 'rest'}
 								<input
@@ -89,7 +83,7 @@
 									value={log.restSec ?? ''}
 									onfocus={selectAll}
 									onpointerup={selectAll}
-									onchange={(event) => update(log, field, intOrNull(event.currentTarget.value))}
+									onchange={(event) => update(log, field, parseCount(event.currentTarget.value))}
 								/>
 							{:else}
 								<select

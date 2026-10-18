@@ -1,6 +1,6 @@
-# Workout
+# Strongr
 
-Personal workout log. SvelteKit app (`adapter-node`) with an embedded Postgres database (PGlite) on disk.
+Personal strength training log. SvelteKit app (`adapter-node`) with an embedded Postgres database (PGlite) on disk.
 
 ## Hosting
 
@@ -14,7 +14,7 @@ That name is a subdomain DuckDNS owns. It stays free while they run the service.
 
 The app runs as `node build` under systemd. Leave `DATABASE_URL` unset so the database stays in `PGLITE_DIR` (default `./data/pglite`) on the VM's boot volume. Provision the VM with the `oci` CLI.
 
-A push to `master` deploys. GitHub Actions syncs the repo to the VM over SSH, builds there, and restarts the `workout` service. The deploy key is the `DEPLOY_SSH_KEY` secret. Its public half is in the VM's `authorized_keys`. The private half is only in GitHub and in `~/.config/workout/github-deploy` on the machine that created it.
+A push to `master` deploys. GitHub Actions syncs the repo to the VM over SSH, builds there, and restarts the `strongr` service. The deploy key is the `DEPLOY_SSH_KEY` secret. Its public half is in the VM's `authorized_keys`. The private half is only in GitHub and in `~/.config/strongr/github-deploy` on the machine that created it.
 
 A free-account Ampere shape is 2 OCPUs and 12 GB, with 200 GB of block storage. That is enough for this app.
 
