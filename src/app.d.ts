@@ -10,7 +10,7 @@ declare global {
 	}
 
 	interface Window {
-		goatcounter?: { no_onload?: boolean; count?: (vars: { path: string }) => void };
+		umami?: { track: (payload: (props: Record<string, unknown>) => Record<string, unknown>) => void };
 	}
 }
 

@@ -57,4 +57,4 @@ A restore script downloads the latest tar from R2, unpacks it into `PGLITE_DIR`,
 
 ## Analytics
 
-Visits to the public preview (`/preview/...`) are counted by the self-hosted GoatCounter on the portfolio VM, dashboard at https://stats.portfolio-aiacuone.duckdns.org. Paths are reported as `/shtrong/preview/...` so they stay apart from the portfolio's own pages. `src/routes/preview/+layout.svelte` loads `count.js` on the first preview page and counts every preview navigation; the signed-in app is not tracked. GoatCounter sets no cookies and ignores `localhost`.
+Visits to the public preview (`/preview/...`) are counted by the self-hosted Umami on the shared Shtrong VM, dashboard at https://stats-aiacuone.duckdns.org. They go to the portfolio's Umami website with paths reported as `/shtrong/preview/...` so they stay apart from the portfolio's own pages. `src/routes/preview/+layout.svelte` loads Umami's script on the first preview page and counts every preview navigation by hand; the signed-in app is not tracked. Umami sets no cookies and `localhost` is skipped.

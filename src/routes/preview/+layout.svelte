@@ -3,18 +3,19 @@
 
 	let { children } = $props();
 
-	// Counts go to the portfolio's GoatCounter, prefixed with /shtrong to keep them apart from its pages.
-	const STATS = 'https://stats.portfolio-aiacuone.duckdns.org';
-	let counter: Promise<void> | undefined;
+	// Counts go to the portfolio's Umami site, prefixed with /shtrong to keep them apart from its pages.
+	const UMAMI = 'https://stats-aiacuone.duckdns.org';
+	const UMAMI_ID = '86eb39c6-0512-4268-9fe4-9711f48123b0';
+	let umamiCounter: Promise<void> | undefined;
 
-	function loadCounter() {
-		if (window.goatcounter?.count) return Promise.resolve();
-		return (counter ??= new Promise((resolve) => {
-			window.goatcounter = { no_onload: true };
+	function loadUmami() {
+		if (window.umami) return Promise.resolve();
+		return (umamiCounter ??= new Promise((resolve) => {
 			const script = document.createElement('script');
-			script.async = true;
-			script.dataset.goatcounter = `${STATS}/count`;
-			script.src = `${STATS}/count.js`;
+			script.defer = true;
+			script.dataset.websiteId = UMAMI_ID;
+			script.dataset.autoTrack = 'false';
+			script.src = `${UMAMI}/script.js`;
 			script.onload = () => resolve();
 			document.head.appendChild(script);
 		}));
@@ -23,7 +24,8 @@
 	afterNavigate(({ to }) => {
 		if (!to) return;
 		const path = `/shtrong${to.url.pathname}`;
-		loadCounter().then(() => window.goatcounter?.count?.({ path }));
+		if (location.hostname === 'localhost') return;
+		loadUmami().then(() => window.umami?.track((props) => ({ ...props, url: path })));
 	});
 </script>
 
