@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { page } from '$app/state';
+	import BugReport from '$lib/components/BugReport.svelte';
 	import Sheet from '$lib/components/Sheet.svelte';
 	import { toast, toastFormError } from '$lib/toast.svelte';
 	import { cmToDisplay } from '$lib/units';
@@ -198,6 +199,10 @@
 			>{importingMeasure ? 'Importing…' : 'Import CSV'}</button
 		>
 	</form>
+
+	{#if data.canReportBugs}
+		<BugReport />
+	{/if}
 
 	<div class="card stack">
 		<h2>More</h2>

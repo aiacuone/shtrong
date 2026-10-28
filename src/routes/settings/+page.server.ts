@@ -1,5 +1,6 @@
 import { fail } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
+import { bugReportConfig, canReportBugs } from '$lib/server/bug-report';
 import { db, schema } from '$lib/server/db';
 import { createRoutinesFromLatestWorkouts } from '$lib/server/routines';
 import { importBmtCsv } from '$lib/server/measurements-import';
@@ -10,7 +11,10 @@ import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const user = requireUser(locals);
-	return { prefs: await getPrefs(user.id) };
+	return {
+		prefs: await getPrefs(user.id),
+		canReportBugs: canReportBugs(bugReportConfig(), user.email)
+	};
 };
 
 export const actions: Actions = {
