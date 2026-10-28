@@ -38,7 +38,7 @@
 
 <div class="card stack">
 	<h2>Bugs and features</h2>
-	<p class="muted help">Report a bug or ask for a feature. Only you can see this. It opens an issue in your private bugs repo on GitHub.</p>
+	<p class="muted help">Report a bug or ask for a feature. Only you can see this. It opens an issue in your private feedback repo on GitHub.</p>
 	<button type="button" class="btn" onclick={() => (open = true)}>Report or request</button>
 </div>
 
