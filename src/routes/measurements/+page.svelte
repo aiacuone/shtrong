@@ -21,12 +21,22 @@
 	let { data } = $props();
 
 	type Entry = (typeof data.entries)[number];
+	type Span = { months: number } | { weeks: number };
+
+	const COPY_RANGES: { label: string; span: Span | null }[] = [
+		{ label: 'Last 2 weeks', span: { weeks: 2 } },
+		{ label: 'Last month', span: { months: 1 } },
+		{ label: 'Last 3 months', span: { months: 3 } },
+		{ label: 'Last 6 months', span: { months: 6 } },
+		{ label: 'All', span: null }
+	];
 
 	const wu = $derived(data.prefs?.weightUnit ?? 'kg');
 	const lu = $derived(data.prefs?.lengthUnit ?? 'cm');
 	const sex = $derived(data.prefs?.sex ?? 'male');
 
 	let copying = $state(false);
+	let copyOpen = $state(false);
 	let weightOpen = $state(false);
 	let caloriesOpen = $state(false);
 	let measureOpen = $state(false);
@@ -198,22 +208,37 @@
 		}
 	}
 
+	/** The day `span` before today, as YYYY-MM-DD. A month back keeps the day of the month, clamped to that month's end. */
+	function cutoffDate(span: Span) {
+		const cutoff = new Date();
+		cutoff.setHours(0, 0, 0, 0);
+		if ('weeks' in span) {
+			cutoff.setDate(cutoff.getDate() - span.weeks * 7);
+		} else {
+			const day = cutoff.getDate();
+			cutoff.setDate(1);
+			cutoff.setMonth(cutoff.getMonth() - span.months);
+			const lastDay = new Date(cutoff.getFullYear(), cutoff.getMonth() + 1, 0).getDate();
+			cutoff.setDate(Math.min(day, lastDay));
+		}
+		return `${cutoff.getFullYear()}-${String(cutoff.getMonth() + 1).padStart(2, '0')}-${String(
+			cutoff.getDate()
+		).padStart(2, '0')}`;
+	}
+
 	const chartEntries = $derived.by(() => {
 		const entries = data.entries.filter((e) => active.some((id) => seriesNumber(e, id) != null));
 		if (chartRange === 'all') return entries;
-
-		const cutoff = new Date();
-		cutoff.setHours(0, 0, 0, 0);
-		const day = cutoff.getDate();
-		cutoff.setDate(1);
-		cutoff.setMonth(cutoff.getMonth() - chartRange);
-		const lastDay = new Date(cutoff.getFullYear(), cutoff.getMonth() + 1, 0).getDate();
-		cutoff.setDate(Math.min(day, lastDay));
-		const cutoffDate = `${cutoff.getFullYear()}-${String(cutoff.getMonth() + 1).padStart(2, '0')}-${String(
-			cutoff.getDate()
-		).padStart(2, '0')}`;
-		return entries.filter((e) => e.measuredOn >= cutoffDate);
+		const from = cutoffDate({ months: chartRange });
+		return entries.filter((e) => e.measuredOn >= from);
 	});
+
+	const copyChoices = $derived(
+		COPY_RANGES.map((range) => {
+			const from = range.span ? cutoffDate(range.span) : null;
+			return { label: range.label, entries: from ? data.entries.filter((e) => e.measuredOn >= from) : data.entries };
+		})
+	);
 
 	const config = $derived.by((): ChartConfiguration => {
 		const on = new Set(active);
@@ -381,12 +406,13 @@
 		});
 	}
 
-	async function copyMeasurements() {
-		if (!data.entries.length || copying) return;
+	async function copyMeasurements(entries: Entry[]) {
+		if (!entries.length || copying) return;
 		copying = true;
 		try {
-			await copyText(measurementsTsv(data.entries, wu, lu));
-			toast('Measurements copied.');
+			await copyText(measurementsTsv(entries, wu, lu));
+			copyOpen = false;
+			toast(`Copied ${entries.length} ${entries.length === 1 ? 'entry' : 'entries'}.`);
 		} catch {
 			toast('Couldn’t copy measurements.', 'error');
 		} finally {
@@ -417,8 +443,8 @@
 		</div>
 		<div class="actions">
 			{#if data.entries.length}
-				<button class="btn" type="button" disabled={copying} onclick={copyMeasurements}>
-					<Icon name="copy" size={18} />{copying ? 'Copying…' : 'Copy'}
+				<button class="btn" type="button" onclick={() => (copyOpen = true)}>
+					<Icon name="copy" size={18} />Copy
 				</button>
 			{/if}
 			{#if latestSummary}
@@ -770,6 +796,22 @@
 	{/if}
 </Sheet>
 
+<Sheet bind:open={copyOpen} title="Copy measurements">
+	<div class="copy-ranges">
+		{#each copyChoices as choice (choice.label)}
+			<button
+				type="button"
+				class="btn block"
+				disabled={!choice.entries.length || copying}
+				onclick={() => copyMeasurements(choice.entries)}
+			>
+				<span>{choice.label}</span>
+				<span class="copy-count">{choice.entries.length} {choice.entries.length === 1 ? 'entry' : 'entries'}</span>
+			</button>
+		{/each}
+	</div>
+</Sheet>
+
 <Sheet bind:open={compareOpen} title="Since your last measurements">
 	{#if compareRows.every((row) => row.prior == null)}
 		<p class="compare-empty">This is the first full set, so there’s nothing earlier to compare.</p>
@@ -815,6 +857,17 @@
 </Sheet>
 
 <style>
+	.copy-ranges {
+		display: grid;
+		gap: 0.5rem;
+	}
+	.copy-ranges .btn {
+		justify-content: space-between;
+	}
+	.copy-count {
+		color: var(--ink-2);
+		font-weight: 500;
+	}
 	.actions {
 		display: flex;
 		flex-wrap: wrap;
